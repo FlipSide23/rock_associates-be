@@ -51,7 +51,7 @@ const createNewUser = async(request, response) =>{
         })
 
         const mailOptions = {
-            from: '"Rock Associates Co. Ltd" <rockassociates2010@gmail.com>',
+            from: '"Rock Associates Co. Ltd" <flipsidedev0@gmail.com>',
             to: newUser.email,
             subject: "Rock Associates Co. Ltd | Verify your email",
             html: `
@@ -102,6 +102,10 @@ const verifyEmail = async(request, response) =>{
             await emailUser.save()
 
             response.redirect(process.env.EMAILVERIFIED_REDIRECT_URL)
+        }
+
+        else{
+            response.send("This email is already verified!")
         }
     }
 
