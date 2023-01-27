@@ -23,9 +23,11 @@ app.use(express.urlencoded({limit: "100mb", extended: true, parameterLimit: 5000
 
 import registerRoute from "./routes/registerRoute.js";
 import loginRoute from "./routes/loginRoute.js";
+import blogRoute from "./routes/blogRoute.js";
 
 app.use("/", cors(corsOptions), registerRoute);
 app.use("/", cors(corsOptions), loginRoute);
+app.use("/", cors(corsOptions), blogRoute);
 
 
 //Server and database connection
