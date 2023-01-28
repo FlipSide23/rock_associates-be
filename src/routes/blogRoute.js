@@ -6,16 +6,16 @@ const router = express.Router()
 
 router.post("/createPost", authentication.authLogin, blogController.createPost);
 router.get("/getAllPosts", blogController.getAllPosts);
-// router.get("/getSinglePost/:id", blogController.getSinglePost);
-// router.put("/updatePost/:id", blogController.updatePost);
-// router.delete("/deletePost/:id", blogController.deletePost);
-// router.put("/createComment/:id", blogController.createComment);
-// router.get("/getAllComments/:id", blogController.getAllComments);
-// router.get("/getAllCommentReplies/:id", blogController.getAllCommentReplies);
-// router.post("/likePost/:blog_id", blogController.likePost);
-// router.get("/getAllLikes/:id", blogController.getAllLikes);
-// router.post("/likeComment/:id/:commentId", blogController.likeComment);
-// router.put("/commentReply/:id/:commentId", blogController.commentReply);
-// router.get("/getSingleComment/:id/:commentId", blogController.getSingleComment);
+router.get("/getSinglePost/:slug", authentication.authUserLoggedIn, blogController.getSinglePost);
+router.put("/updatePost/:blog_id", authentication.authLogin, blogController.updatePost);
+router.delete("/deletePost/:blog_id", authentication.authLogin, blogController.deletePost);
+router.post("/createComment/:blog_id", authentication.authLogin, blogController.createComment); 
+router.get("/getAllComments/:blog_id", blogController.getAllComments);
+router.put("/updateComment/:comment_id", authentication.authLogin, blogController.updateComment);
+router.delete("/deleteComment/:comment_id", authentication.authLogin, blogController.deleteComment);
+router.post("/likePost/:blog_id", authentication.authLogin, blogController.likePost);
+router.post("/likeComment/:comment_id", authentication.authLogin, blogController.likeComment);
+router.post("/commentReply/:comment_id", authentication.authLogin, blogController.commentReply);
+router.get("/getAllCommentReplies/:comment_id", blogController.getAllCommentReplies);
 
 export default router

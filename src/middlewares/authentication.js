@@ -39,5 +39,24 @@ const authLogin = async(request, response, next) =>{
 
     
 }
+const authUserLoggedIn = async(request, response, next) =>{
+    
+        var token = request.headers['auth_token']
 
-export default { authLogin }
+        if(token){
+            try {
+            var decoded =  Jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+              if(decoded){
+                  request.user=decoded.data;
+              }
+            } catch(error) {
+                console.log(error)
+            }	
+        }
+    
+        next();
+
+   }
+
+
+export default { authLogin, authUserLoggedIn }

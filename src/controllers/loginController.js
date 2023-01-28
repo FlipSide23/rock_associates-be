@@ -244,7 +244,9 @@ const updateProfilePicture = async(request, response) =>{
             folder: "Rock Associates Images"
         })
 
-                const ourLoggedInUser = await User.findById(request.user._id) 
+                let current_user= request.user;
+
+                const ourLoggedInUser = await User.findById(current_user._id) 
 
                 if (ourLoggedInUser){
                         ourLoggedInUser.imageLink = result.secure_url || ourLoggedInUser.imageLink
