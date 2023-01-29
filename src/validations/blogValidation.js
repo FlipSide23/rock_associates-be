@@ -7,17 +7,9 @@ const blogValidationSchema = Joi.object({
     postBody: Joi.string().required().messages({
         "string.empty": "The post body can not be empty"
     }),
-    // postImage: Joi.string(),
-
-    // commentBody: Joi.string(),
-    // commentorName: Joi.string(),
-    // commentorImage: Joi.string(),
-    // dateCommented: Joi.string(),
-
-    // replyBody: Joi.string(),
-    // replierName: Joi.string(),
-    // replierImage: Joi.string(),
-    // dateReplied: Joi.string()
+    postImage: Joi.string(),
+    createdBy: Joi.string(),
+    slug: Joi.string()
 
 })
 

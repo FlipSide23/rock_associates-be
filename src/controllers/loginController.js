@@ -13,7 +13,7 @@ const loginUser = async(request, response) =>{
 
         if (!getUser) 
             return response.status(400).json({
-                "invalidEmail": "Invalid email or password, Please try again"
+                "invalidEmail": "Invalid email or password, Please try again!"
             })
 
         if(!getUser.isVerified)
@@ -26,7 +26,7 @@ const loginUser = async(request, response) =>{
 
         if (!userPassword)
             return response.status(400).json({
-                "invalidPassword": "Invalid email or password, Please try again"
+                "invalidPassword": "Invalid email or password, Please try again!"
             })
         
         const token = Jwt.sign({ data : getUser } , process.env.ACCESS_TOKEN_SECRET, {expiresIn: '24h'})
@@ -34,7 +34,7 @@ const loginUser = async(request, response) =>{
         response.status(200).json({
             "successMessage": "Logged In Successfully!",
             "User": getUser, 
-            "Access_Token": token
+            "Access_Token": token,
         })
     }
 
@@ -50,9 +50,12 @@ const loginUser = async(request, response) =>{
 
 const loggedInUser = async(request, response) =>{
     try{
+
+        const loggedInUser = await User.findOne({ _id : request.user._id })
+
         response.status(200).json({
             "successMessage": "LoggedIn User Fetched Successfully!",
-            "loggedInUser": request.user, 
+            "loggedInUser": loggedInUser, 
         })
     }
 
@@ -246,27 +249,16 @@ const updateProfilePicture = async(request, response) =>{
 
                 let current_user= request.user;
 
-                const ourLoggedInUser = await User.findById(current_user._id) 
+                await User.updateOne({
+                    _id : current_user._id
+                },{
+                    imageLink : result.secure_url 
 
-                if (ourLoggedInUser){
-                        ourLoggedInUser.imageLink = result.secure_url || ourLoggedInUser.imageLink
-                    
-                    
-                    const updatedUser = await ourLoggedInUser.save()
-
-                    const newProfilePicture = {
-                        imageLink: updatedUser.imageLink
-                    }
-
-                    response.status(200).json({
-                        "message": "Profile picture updated successfully!",
-                        "ourUpdatedUser": newProfilePicture
                     })
-                }
 
-                else{
-                    response.status(404).json({"message": "User not found!"})
-                }
+                response.status(200).json({
+                    "successMessage": "Profile picture updated successfully!",
+                })
 
     }
 
@@ -279,4 +271,34 @@ const updateProfilePicture = async(request, response) =>{
     }
 }
 
-export default { loginUser, loggedInUser, forgotPassword, resetPassword, newPassword, updateProfilePicture }
+// update user profile
+
+const deleteProfilePicture = async(request, response) =>{
+
+    try{
+
+                let current_user= request.user;
+
+                await User.updateOne({
+                    _id : current_user._id
+                },{
+                    imageLink : null 
+
+                })
+
+                response.status(200).json({
+                    "successMessage": "Profile picture deleted successfully!",
+                })
+
+    }
+
+    catch(error){
+        console.log(error)
+        response.status(500).json({
+            "status": "fail",
+            "errorMessage": error.message
+        })
+    }
+}
+
+export default { loginUser, loggedInUser, forgotPassword, resetPassword, newPassword, updateProfilePicture, deleteProfilePicture }

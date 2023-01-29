@@ -3,10 +3,13 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv"
+import cookieParser from "cookie-parser";
 
 const app = express();
 dotenv.config()
 
+
+//middelwares
 const corsOptions = {
     origin: '*',
     credentials:true,
@@ -17,10 +20,10 @@ app.use(bodyParser.json({limit: "100mb"}));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.json({limit: "100mb", extended: true}))
 app.use(express.urlencoded({limit: "100mb", extended: true, parameterLimit: 50000}))
+app.use(cookieParser())
 
 
 //routes
-
 import registerRoute from "./routes/registerRoute.js";
 import loginRoute from "./routes/loginRoute.js";
 import blogRoute from "./routes/blogRoute.js";
@@ -35,7 +38,6 @@ app.use("/", cors(corsOptions), subscriptionRoute);
 
 
 //Server and database connection
-
 const port = process.env.PORT_NUMBER || 5000;
 
 mongoose.set('strictQuery', true);

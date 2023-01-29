@@ -17,5 +17,7 @@ router.put("/newPassword", loginController.newPassword)
 
 router.put("/updateProfilePicture", authentication.authLogin, loginController.updateProfilePicture)
 
+router.put("/deleteProfilePicture", authentication.authLogin, loginController.updateProfilePicture)
+
 
 export default router

@@ -17,7 +17,7 @@ const createNewUser = async(request, response) =>{
     const duplicatedEmail = await User.findOne({email: request.body.email})
 
     if (duplicatedEmail)
-        return response.status(409).json({"message": `The user with email "${request.body.email}" already exist`})
+        return response.status(409).json({"message": `A user with email "${request.body.email}" already exist`})
 
     try{
 

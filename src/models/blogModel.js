@@ -14,10 +14,10 @@ const blogSchema = new Schema({
         required: true
     },
 
-    // postImage: {
-    //     type: String,
-    //     required: true
-    // },
+    postImage: {
+        type: String,
+        required: true
+    },
 
     slug: {
         type: String,
