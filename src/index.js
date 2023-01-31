@@ -29,12 +29,14 @@ import loginRoute from "./routes/loginRoute.js";
 import blogRoute from "./routes/blogRoute.js";
 import contactRoute from "./routes/contactRoute.js";
 import subscriptionRoute from "./routes/subscriptionRoute.js";
+import staffRoute from "./routes/editUI/staffRoute.js"
 
 app.use("/", cors(corsOptions), registerRoute);
 app.use("/", cors(corsOptions), loginRoute);
 app.use("/", cors(corsOptions), blogRoute);
 app.use("/", cors(corsOptions), contactRoute);
 app.use("/", cors(corsOptions), subscriptionRoute);
+app.use("/", cors(corsOptions), staffRoute);
 
 
 //Server and database connection

@@ -83,16 +83,16 @@ const getAllPosts = async(request, response) =>{
 			  $match: { 
 			    $or :[
 			      {
-			        title : { $regex: request.query.keyword } 
+			        title : { $regex: request.query.keyword, $options: 'i' } 
 			      },
 			      {
-			        postBody : { $regex: request.query.keyword } 
+			        postBody : { $regex: request.query.keyword, $options: 'i' } 
 			      },
 			      {
-			        'postCreator.firstName' : { $regex: request.query.keyword } 
+			        'postCreator.firstName' : { $regex: request.query.keyword, $options: 'i' } 
 			      },
 			      {
-			        'postCreator.lastName' : { $regex: request.query.keyword } 
+			        'postCreator.lastName' : { $regex: request.query.keyword, $options: 'i' } 
 			      }
 			    ]
 			  }
@@ -111,7 +111,7 @@ const getAllPosts = async(request, response) =>{
         // Pagination functionality
         let total = await blogSchema.countDocuments(query);
 		let page=(request.query.page)?parseInt(request.query.page):1;
-		let perPage=(request.query.perPage)?parseInt(request.query.perPage):6;
+		let perPage=(request.query.perPage)?parseInt(request.query.perPage):4;
 		let skip=(page-1)*perPage;
 		query.push({
 			$skip:skip,
@@ -127,6 +127,7 @@ const getAllPosts = async(request, response) =>{
     			"_id":1,
     			"createdAt":1,
 	    		"title": 1,
+	    		"slug": 1,
 				"postImage":1,
 				"postCreator._id":1 ,
 	    		"postCreator.firstName":1,
@@ -204,6 +205,7 @@ const getSinglePost = async(request, response) =>{
 			}
 		];
 
+
 		// Only show needed fields
         query.push(
 	    	{ 
@@ -212,15 +214,19 @@ const getSinglePost = async(request, response) =>{
     			"createdAt":1,
 	    		"title": 1,
 				"slug": 1,
+				"postBody": 1,
 				"postImage":1,
 				"postCreator._id":1 ,
 	    		"postCreator.firstName":1,
 	    		"postCreator.lastName":1,
+	    		"postCreator.imageLink":1,
 				"comments_count":{$size:{"$ifNull":["$blog_comments",[]]}},
 				"likes_count":{$size:{"$ifNull":["$blog_likes",[]]}}
 	    		} 
 	    	}
 	    );
+
+		let total = await blogSchema.countDocuments(query);
 
         const post = await blogSchema.aggregate(query);
         
@@ -243,8 +249,9 @@ const getSinglePost = async(request, response) =>{
 
 			response.status(200).json({
 				"fetchedPost": blogSchema.hydrate(blog),
-				meta:{
-					liked_by_current_user: liked_by_current_user
+				"fetchedPostDetails":{
+					liked_by_current_user: liked_by_current_user,
+					totalPosts: total
 				} 
 			})
 		}
