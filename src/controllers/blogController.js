@@ -473,6 +473,15 @@ const getAllComments = async(request, response) =>{
 				},
 				{$unwind: '$commentCreator'},
 				{
+					$lookup:
+					{
+					 from: "commentlikes",
+					 localField: "comment_likes",
+					 foreignField: "_id",
+					 as: "commentLikes"
+					}
+				},
+				{
 					$match:{
 						'blog_id':mongoose.Types.ObjectId(blog_id)
 					}
@@ -491,6 +500,7 @@ const getAllComments = async(request, response) =>{
 					"_id":1,
 					"createdAt":1,
 					"comment": 1,
+					"commentLikes.user_id": 1,
 					"postCreator._id":1 ,
 					"commentCreator.firstName":1,
 					"commentCreator.lastName":1,
@@ -500,27 +510,10 @@ const getAllComments = async(request, response) =>{
 				}
 			);
 
-			let total=await blogCommentModel.countDocuments(query);
-			let page=(request.query.page)?parseInt(request.query.page):1;
-			let perPage=(request.query.perPage)?parseInt(request.query.perPage):10;
-			let skip=(page-1)*perPage;
-			query.push({
-				$skip:skip,
-			});
-			query.push({
-				$limit:perPage,
-			});
-
 			let allComments = await blogCommentModel.aggregate(query);
 	
 			response.status(200).json({
-                "allAvailableComments": allComments.map(doc => blogCommentModel.hydrate(doc)),
-                "paginationDetails":{
-                    total:total,
-                    currentPage:page,
-                    perPage:perPage,
-                    totalPages:Math.ceil(total/perPage)
-                }
+                "allAvailableComments": allComments.map(doc => blogCommentModel.hydrate(doc))
         })
 
 	}
@@ -936,32 +929,17 @@ const getAllCommentReplies = async(request, response) =>{
 					"comment_likes": 1,
 					"postCreator._id":1 ,
 					"replyCreator.firstName":1,
-					"replyCreator.lastName":1
+					"replyCreator.lastName":1,
+					"replyCreator.imageLink":1,
 					} 
 				}
 			);
 
-			let total=await commentReplyModel.countDocuments(query);
-			let page=(request.query.page)?parseInt(request.query.page):1;
-			let perPage=(request.query.perPage)?parseInt(request.query.perPage):3;
-			let skip=(page-1)*perPage;
-			query.push({
-				$skip:skip,
-			});
-			query.push({
-				$limit:perPage,
-			});
 
 			let allReplies = await commentReplyModel.aggregate(query);
 	
 			response.status(200).json({
                 "allAvailableReplies": allReplies.map(doc => commentReplyModel.hydrate(doc)),
-                "paginationDetails":{
-                    total:total,
-                    currentPage:page,
-                    perPage:perPage,
-                    totalPages:Math.ceil(total/perPage)
-                }
         })
 
 	}
