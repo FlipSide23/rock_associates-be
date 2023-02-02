@@ -29,7 +29,7 @@ const loginUser = async(request, response) =>{
                 "invalidPassword": "Invalid email or password, Please try again!"
             })
         
-        const token = Jwt.sign({ data : getUser } , process.env.ACCESS_TOKEN_SECRET, {expiresIn: '24h'})
+        const token = Jwt.sign({ data : getUser } , process.env.ACCESS_TOKEN_SECRET)
 
         response.status(200).json({
             "successMessage": "Logged In Successfully!",

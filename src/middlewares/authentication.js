@@ -3,7 +3,6 @@ import Jwt from "jsonwebtoken"
 const authLogin = async(request, response, next) =>{
     
         var token = request.headers['auth_token']
-
         if(!token){
             return response.status(401).json({
                 "invalidToken": "Please Login to continue!"
@@ -22,15 +21,16 @@ const authLogin = async(request, response, next) =>{
                         })
                     }
                 } catch(error){
-                    if(error.expiredAt && error.expiredAt < new Date()){
+                    // if(error.expiredAt && error.expiredAt < new Date()){
+                    //     return response.status(401).json({
+                    //         "invalidToken": "Your session has expired, please login again!"
+                    //     })
+                    // } else{
+                        console.log(error)
                         return response.status(401).json({
-                            "invalidToken": "Your session has expired, please login again!"
+                            "invalidToken": "Please Login to continue mvaho!"
                         })
-                    } else{
-                        return response.status(401).json({
-                            "invalidToken": "Please Login to continue!"
-                        })
-                    }
+                    // }
                     
                 }
 
@@ -42,7 +42,7 @@ const authLogin = async(request, response, next) =>{
 const authUserLoggedIn = async(request, response, next) =>{
     
         var token = request.headers['auth_token']
-
+        
         if(token){
             try {
             var decoded =  Jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)

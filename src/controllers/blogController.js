@@ -185,7 +185,7 @@ const getAllPosts = async(request, response) =>{
 const getSinglePost = async(request, response) =>{
     try{
 
-		let slug = request.params.slug;
+		let slug = request.query.slug;
 
 		let query=[
 			{
@@ -216,6 +216,7 @@ const getSinglePost = async(request, response) =>{
 				"slug": 1,
 				"postBody": 1,
 				"postImage":1,
+				"blog_likes":1,
 				"postCreator._id":1 ,
 	    		"postCreator.firstName":1,
 	    		"postCreator.lastName":1,
@@ -493,6 +494,7 @@ const getAllComments = async(request, response) =>{
 					"postCreator._id":1 ,
 					"commentCreator.firstName":1,
 					"commentCreator.lastName":1,
+					"commentCreator.imageLink":1,
 					"comment_likes_count":{$size:{"$ifNull":["$comment_likes",[]]}}
 					} 
 				}
@@ -930,6 +932,8 @@ const getAllCommentReplies = async(request, response) =>{
 					"_id":1,
 					"createdAt":1,
 					"reply": 1,
+					"comment_replies": 1,
+					"comment_likes": 1,
 					"postCreator._id":1 ,
 					"replyCreator.firstName":1,
 					"replyCreator.lastName":1

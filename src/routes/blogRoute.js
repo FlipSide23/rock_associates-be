@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.post("/createPost", authentication.authLogin, blogController.createPost);
 router.get("/getAllPosts", blogController.getAllPosts);
-router.get("/getSinglePost/:slug", authentication.authUserLoggedIn, blogController.getSinglePost);
+router.get("/getSinglePost", authentication.authUserLoggedIn, blogController.getSinglePost);
 router.put("/updatePost/:blog_id", authentication.authLogin, blogController.updatePost);
 router.delete("/deletePost/:blog_id", authentication.authLogin, blogController.deletePost);
 router.post("/createComment/:blog_id", authentication.authLogin, blogController.createComment); 
