@@ -8,10 +8,11 @@ router.post("/addMember", staffController.addMember);
 
 router.get("/getAllMembers", staffController.getAllMembers);
 
-// router.delete("/deleteMessage/:message_id", contactController.deleteMessage);
+router.get("/getSingleMember", staffController.getSingleMember);
 
-// router.put("/replyMessage/:message_id", contactController.replyMessage);
+router.put("/updateMember", staffController.updateMember);
 
-// router.get("/getMessageById/:message_id", contactController.getMessageById);
+router.delete("/deleteMember", staffController.deleteMember);
+
 
 export default router;

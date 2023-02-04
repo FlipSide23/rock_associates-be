@@ -37,8 +37,8 @@ const Subscribe = async(request, response) =>{
             subject: "Rock Associates Co. Ltd | Verify your email",
             html: `
             <div style="padding: 10px 0px;">
-                <h3> Thank you for subscribing on our website! </h3> 
-                <h4> Click the button below to verify your email... </h4>
+                <h3> Thank you for subscribing on our News Letter! </h3> 
+                <h4> Click the button below to verify this email... </h4>
                 <a style="border-radius: 5px; margin-bottom: 10px; text-decoration: none; color: white; padding: 10px; cursor: pointer; background: #28a745;" 
                 href="http://${request.headers.host}/verifyEmail?token=${subscribedMessage.emailToken}"> 
                 Verify Email </a>

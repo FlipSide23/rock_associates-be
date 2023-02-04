@@ -18,6 +18,18 @@ const staffSchema = new Schema({
         required: true
     },
 
+    facebookProfile: {
+        type: String
+    },
+
+    linkedlinProfile: {
+        type: String
+    },
+    
+    twitterProfile: {
+        type: String
+    },
+
 }, {
     timestamps: true
 })

@@ -128,6 +128,7 @@ const getAllPosts = async(request, response) =>{
     			"createdAt":1,
 	    		"title": 1,
 	    		"slug": 1,
+				"postBody": 1,
 				"postImage":1,
 				"postCreator._id":1 ,
 	    		"postCreator.firstName":1,
@@ -281,27 +282,21 @@ const getSinglePost = async(request, response) =>{
 const updatePost = async(request, response) =>{
     try{
 
-		let blog_id = request.params.blog_id;
-
-		if(!mongoose.Types.ObjectId.isValid(blog_id)){
-			return response.status(400).json({
-				"invalidId":'Something went wrong, refresh your page and try again!',
-			});
-		}
+		let slug = request.query.slug;
 
         const postImageResult = await cloudinary.uploader.upload(request.body.postImage, {
             folder: "Rock Associates's Post Images"
         })
 
-        const post = await blogSchema.findOne({_id: blog_id});
+        const post = await blogSchema.findOne({slug: slug});
         if (post){
 
 			let current_user = request.user;
 
 			if(post.createdBy!= current_user._id){
 				return response.status(400).json({
-			  		"unauthorizedError":'Access denied, you are not the creator of this post!',
-			  	});
+					"unauthorizedError":'Access denied, you are not the creator of this post!',
+			});
 			}else{
                 post.title = request.body.title || post.title,
                 post.postBody = request.body.postBody || post.postBody

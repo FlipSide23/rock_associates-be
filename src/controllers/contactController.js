@@ -19,6 +19,42 @@ const sendMessage = async(request, response) =>{
             phoneNumber: request.body.phoneNumber,
             message: request.body.message
         })
+
+
+        const sender = nodemailer.createTransport({
+            service:"gmail",
+            auth: {
+                user: "flipsidedev0@gmail.com",
+                pass: process.env.NODEMAILER_PASSWORD
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        })
+
+        const mailOptions = {
+            from: '"FlipSide Dev" <flipsidedev0@gmail.com>',
+            to: "ndicunguyesteve4@gmail.com",
+            subject: "🔔Notification alert🔔",
+            html: `
+            <div style="padding: 10px 0;">
+                <h4 style="font-size: 16px;"> 🔔 You have a new client message on 
+                <a style="text-decoration: none; color: #28a745; cursor: pointer;" href="https://rockassociates.netlify.app/"> 
+                rockassociates.com
+                </a> 🔔  </h4>
+            </div>
+            `
+        }
+
+        sender.sendMail(mailOptions, function(error, info){
+            if(error){
+                console.log(error)
+            }
+
+            else{
+                console.log("Verification email sent to your account")
+            }
+        })
     
         response.status(201).json({
             "successMessage": "Message sent successfully!",
@@ -149,7 +185,6 @@ const replyMessage = async (request, response) => {
                 "replyMessageSuccess": "Message sent!",
                 "repliedMessage": senderMessage.replyMessage
             })
-            console.log(senderMessage.replyMessage)
         })
 
     } 
