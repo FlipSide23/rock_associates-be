@@ -30,6 +30,8 @@ import blogRoute from "./routes/blogRoute.js";
 import contactRoute from "./routes/contactRoute.js";
 import subscriptionRoute from "./routes/subscriptionRoute.js";
 import staffRoute from "./routes/editUI/staffRoute.js"
+import aboutRoute from "./routes/editUI/aboutRoute.js"
+import experienceRoute from "./routes/editUI/experienceRoute.js"
 
 app.use("/", cors(corsOptions), registerRoute);
 app.use("/", cors(corsOptions), loginRoute);
@@ -37,6 +39,8 @@ app.use("/", cors(corsOptions), blogRoute);
 app.use("/", cors(corsOptions), contactRoute);
 app.use("/", cors(corsOptions), subscriptionRoute);
 app.use("/", cors(corsOptions), staffRoute);
+app.use("/", cors(corsOptions), aboutRoute);
+app.use("/", cors(corsOptions), experienceRoute);
 
 
 //Server and database connection
