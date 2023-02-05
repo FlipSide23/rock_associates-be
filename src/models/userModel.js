@@ -29,7 +29,11 @@ const userSchema = new Schema({
     },
 
     imageLink: {
-        type: String
+        url: String
+    },
+
+    ImagePresent: {
+        type: Boolean
     },
 
     emailToken: {

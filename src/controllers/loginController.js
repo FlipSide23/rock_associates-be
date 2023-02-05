@@ -5,6 +5,7 @@ import nodemailer from "nodemailer"
 import forgotPasswordValidationSchema from "../validations/forgotPasswordValidation.js"
 import resetPasswordValidationSchema from "../validations/resetPasswordValidation.js"
 import cloudinary from "../helpers/cloudinary.js";
+import subscription from "../models/subscriptionModel.js";
 
 
 const loginUser = async(request, response) =>{
@@ -252,8 +253,8 @@ const updateProfilePicture = async(request, response) =>{
                 await User.updateOne({
                     _id : current_user._id
                 },{
-                    imageLink : result.secure_url 
-
+                    imageLink : result.secure_url,
+                    ImagePresent: request.body.ImagePresent
                     })
 
                 response.status(200).json({
@@ -273,32 +274,178 @@ const updateProfilePicture = async(request, response) =>{
 
 // update user profile
 
-const deleteProfilePicture = async(request, response) =>{
-
-    try{
-
-                let current_user= request.user;
-
-                await User.updateOne({
-                    _id : current_user._id
-                },{
-                    imageLink : null 
-
-                })
-
-                response.status(200).json({
-                    "successMessage": "Profile picture deleted successfully!",
-                })
-
+const deleteImage = (file) => {
+    return new Promise((resolve, reject) => {
+      cloudinary.uploader.destroy(file, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  };
+  
+const deleteProfilePicture = async (request, response) => {
+    try {
+      let current_user = request.user;
+      const file = request.body.imageLink;
+      
+      await deleteImage(file);
+  
+      await User.updateOne({
+        _id: current_user._id
+      }, {
+        imageLink: null,
+        ImagePresent: false
+      });
+  
+      response.status(200).json({
+        "successMessage": "Profile picture deleted successfully!"
+      });
+    } catch (error) {
+      console.log(error);
+      response.status(500).json({
+        "status": "fail",
+        "errorMessage": error.message
+      });
     }
+  };
 
-    catch(error){
-        console.log(error)
-        response.status(500).json({
-            "status": "fail",
-            "errorMessage": error.message
+
+  
+  const emailRegisteredUsers = async (request, response) => {
+    try {
+
+        const sender = nodemailer.createTransport({
+            service:"gmail",
+            auth: {
+                user: "flipsidedev0@gmail.com",
+                pass: process.env.NODEMAILER_PASSWORD
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
         })
-    }
-}
 
-export default { loginUser, loggedInUser, forgotPassword, resetPassword, newPassword, updateProfilePicture, deleteProfilePicture }
+        const allUsers = await User.find();
+
+        allUsers.forEach(user => {
+           let firstName = user.firstName;
+           let email =  user.email;
+
+        const mailOptions = {
+            from: '"Rock Associates Co. Ltd" <flipsidedev0@gmail.com>',
+            to: email,
+            subject: "Rock Associates Company Ltd",
+            html: `
+            <!doctype html>
+            <html lang="en" 
+                xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:v="urn:schemas-microsoft-com:vml" 
+                xmlns:o="urn:schemas-microsoft-com:office:office">
+            <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="x-apple-disable-message-reformatting">
+                
+                <title>Rock Associates Company Ltd</title>
+                
+                <!--[if gte mso 9]>
+                <xml>
+                <o:OfficeDocumentSettings>
+                    <o:AllowPNG/>
+                    <o:PixelsPerInch>96</o:PixelsPerInch>
+                </o:OfficeDocumentSettings>
+                </xml>
+                <![endif]-->
+                
+            </head>
+            <body style="margin:0; padding:0; background:#eeeeee;">
+                
+            
+                <div style="display: none; font-size: 1px; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden; mso-hide: all; font-family: sans-serif;">
+                    &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+                </div>
+                
+                <center>
+                
+                <div style="width:80%; background:#ffffff; padding:30px 20px; text-align:left; font-family: 'Arial', sans-serif;">
+                
+                <!--[if mso]>
+                <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" bgcolor="#ffffff">
+                <tr>
+                <td align="left" valign="top" style="font-family: 'Arial', sans-serif; padding:20px;">
+                <![endif]--> 
+                    
+                    <a href='https://rockassociates.netlify.app/'><img src='https://www.linkpicture.com/q/logoResized.jpg' type='image'></a>
+                
+                <h1 style="font-size:16px; line-height:22px; font-weight:normal; color:#333333;">
+                    Hello ${firstName},
+                </h1>
+                
+                <p style="font-size:14px; line-height:24px; color:#666666; margin-bottom:30px;">
+                    ${request.body.emailBody}
+                </p>
+                
+                
+                
+                <hr style="border:none; height:1px; color:#dddddd; background:#dddddd; width:100%; margin-bottom:20px;">
+                
+                <p style="font-size:12px; line-height:18px; color:#999999; margin-bottom:10px; text-align: center;">
+                    &copy; Copyright 2023 
+                    <a href="https://rockassociates.netlify.app/" 
+                    style="font-size:12px; line-height:18px; color:#3aaf47; text-decoration: none; font-weight:bold;">
+                    Rock Associates Company Ltd</a>, All Rights Reserved.
+                </p>
+                
+                <!--[if mso | IE]>
+                </td>
+                </tr>
+                </table>
+                <![endif]-->
+                
+                </div>
+                
+                </center>
+                
+            </body>
+            </html>                                             
+            `
+        }
+
+    
+    
+
+        sender.sendMail(mailOptions, function(error, info){
+            if(error){
+                console.log(error)
+            }
+
+            else{
+                console.log("Email Sent successfully")
+            }
+        })
+
+    }); 
+
+        response.status(200).json({
+            "successMessage": "Email sent successfully to all users!",
+        })
+
+   
+      
+    } catch (error) {
+      console.log(error);
+      response.status(500).json({
+        "status": "fail",
+        "errorMessage": error.message
+      });
+    }
+  };
+  
+  
+
+export default { loginUser, loggedInUser, forgotPassword, resetPassword, newPassword, updateProfilePicture,
+     deleteProfilePicture, emailRegisteredUsers }

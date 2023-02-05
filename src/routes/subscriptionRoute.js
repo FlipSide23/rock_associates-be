@@ -10,8 +10,10 @@ router.get("/getAllSubscriptions", subscriptionController.getAllSubscriptions);
 
 router.delete("/deleteSubscriber/:subscription_id", subscriptionController.deleteSubscriber);
 
-router.get("/verifyEmail", subscriptionController.verifyEmail)
+router.get("/verifyEmailSubscription", subscriptionController.verifyEmailSubscription)
 
 router.get("/getSubscriberById/:subscription_id", subscriptionController.getSubscriberById);
+
+router.post("/emailSubscribers", subscriptionController.emailSubscribers)
 
 export default router;

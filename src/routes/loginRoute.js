@@ -15,9 +15,13 @@ router.get("/resetPassword", loginController.resetPassword)
 
 router.put("/newPassword", loginController.newPassword)
 
+router.post("/emailRegisteredUsers", loginController.emailRegisteredUsers)
+
 router.put("/updateProfilePicture", authentication.authLogin, loginController.updateProfilePicture)
 
-router.put("/deleteProfilePicture", authentication.authLogin, loginController.updateProfilePicture)
+router.delete("/deleteProfilePicture", authentication.authLogin, loginController.updateProfilePicture)
+
+
 
 
 export default router
