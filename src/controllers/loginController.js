@@ -134,12 +134,14 @@ const forgotPassword = async(request, response) =>{
             else{
                 console.log("Please check your account to reset your password")
 
-                response.status(200).json({
-                    "resetSuccess": "Please check your email to reset your password",
-                    "resetPasswordToken": resetPasswordToken
-                })
+                
             }
-        })           
+        })       
+        
+        response.status(200).json({
+            "resetSuccess": "Please check your email to reset your password",
+            "resetPasswordToken": resetPasswordToken
+        })
     }   
 
     catch(error){
