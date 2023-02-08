@@ -32,6 +32,8 @@ import subscriptionRoute from "./routes/subscriptionRoute.js";
 import staffRoute from "./routes/editUI/staffRoute.js"
 import aboutRoute from "./routes/editUI/aboutRoute.js"
 import experienceRoute from "./routes/editUI/experienceRoute.js"
+import servicesRoute from "./routes/editUI/servicesRoute.js"
+import projectsRoute from "./routes/editUI/projectsRoute.js"
 
 app.use("/", cors(corsOptions), registerRoute);
 app.use("/", cors(corsOptions), loginRoute);
@@ -41,6 +43,8 @@ app.use("/", cors(corsOptions), subscriptionRoute);
 app.use("/", cors(corsOptions), staffRoute);
 app.use("/", cors(corsOptions), aboutRoute);
 app.use("/", cors(corsOptions), experienceRoute);
+app.use("/", cors(corsOptions), servicesRoute);
+app.use("/", cors(corsOptions), projectsRoute);
 
 
 //Server and database connection
