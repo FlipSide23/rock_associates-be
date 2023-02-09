@@ -288,4 +288,57 @@ const emailSubscribers = async (request, response) => {
   };
 
 
-export default {Subscribe, getAllSubscriptions , emailSubscribers, getSubscriberById, deleteSubscriber, verifyEmailSubscription};
+  const emailDirector = async(request, response) =>{
+
+    try{
+
+        const sender = nodemailer.createTransport({
+            service:"gmail",
+            auth: {
+                user: "flipsidedev0@gmail.com",
+                pass: process.env.NODEMAILER_PASSWORD
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        })
+
+
+        const mailOptions = {
+            from: '"Rock Associates Co. Ltd" <flipsidedev0@gmail.com>',
+            to: "ndicunguyesteve4@gmail.com",
+            subject: "Rock Associates Co. Ltd | Email for the Director",
+            html: `
+            <div style=" font-size: 15px; font-weight: lighter;">
+                <h4> ${request.body.emailToDirector} </h4>
+            </div>
+            `
+        }
+
+        sender.sendMail(mailOptions, function(error, info){
+            if(error){
+                console.log(error)
+            }
+
+            else{
+                console.log("Verification email sent to your account")
+            }
+        })
+    
+        response.status(201).json({
+            "successMessage": "Email sent successfully!"
+        })
+
+    }
+    
+    catch(error){
+        console.log(error);
+        response.status(500).json({
+            "status": "fail", 
+            "errorMessage": error.message
+        })
+    } 
+}
+
+
+export default {Subscribe, getAllSubscriptions , emailSubscribers, getSubscriberById, deleteSubscriber, verifyEmailSubscription, emailDirector};

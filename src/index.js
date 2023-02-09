@@ -34,6 +34,7 @@ import aboutRoute from "./routes/editUI/aboutRoute.js"
 import experienceRoute from "./routes/editUI/experienceRoute.js"
 import servicesRoute from "./routes/editUI/servicesRoute.js"
 import projectsRoute from "./routes/editUI/projectsRoute.js"
+import testimonialRoute from "./routes/editUI/testimonialRoute.js"
 
 app.use("/", cors(corsOptions), registerRoute);
 app.use("/", cors(corsOptions), loginRoute);
@@ -45,6 +46,7 @@ app.use("/", cors(corsOptions), aboutRoute);
 app.use("/", cors(corsOptions), experienceRoute);
 app.use("/", cors(corsOptions), servicesRoute);
 app.use("/", cors(corsOptions), projectsRoute);
+app.use("/", cors(corsOptions), testimonialRoute);
 
 
 //Server and database connection

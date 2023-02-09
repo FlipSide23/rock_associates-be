@@ -173,7 +173,7 @@ const updateProject = async(request, response) =>{
             await Project.save()
 
             response.status(200).json({
-                "ProjectUpdateSuccess": "Project updated successfully!",
+                "projectUpdateSuccess": "Project updated successfully!",
                 "updatedProject": Project
             })
 

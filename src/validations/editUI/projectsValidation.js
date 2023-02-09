@@ -34,6 +34,10 @@ const projectsValidationSchema = Joi.object({
 
     client: Joi.string().required().messages({
         "string.empty": "The client field can not be empty"
+    }),
+
+    category: Joi.string().required().messages({
+        "string.empty": "The category field can not be empty"
     })
 
 })

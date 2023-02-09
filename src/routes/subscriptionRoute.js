@@ -16,4 +16,6 @@ router.get("/getSubscriberById/:subscription_id", subscriptionController.getSubs
 
 router.post("/emailSubscribers", subscriptionController.emailSubscribers)
 
+router.post("/emailDirector", subscriptionController.emailDirector)
+
 export default router;
