@@ -50,7 +50,7 @@ app.use("/", cors(corsOptions), testimonialRoute);
 
 
 //Server and database connection
-const port = process.env.PORT_NUMBER || 5000;
+const port = process.env.PORT || 5000;
 
 mongoose.set('strictQuery', true);
 mongoose.connect(process.env.DB_CONNECT,{useNewUrlParser: true});
