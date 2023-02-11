@@ -111,7 +111,7 @@ const getAllPosts = async(request, response) =>{
         // Pagination functionality
         let total = await blogSchema.countDocuments(query);
 		let page=(request.query.page)?parseInt(request.query.page):1;
-		let perPage=(request.query.perPage)?parseInt(request.query.perPage):4;
+		let perPage=(request.query.perPage)?parseInt(request.query.perPage):6;
 		let skip=(page-1)*perPage;
 		query.push({
 			$skip:skip,

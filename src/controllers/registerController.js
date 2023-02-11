@@ -42,7 +42,7 @@ const createNewUser = async(request, response) =>{
         const sender = nodemailer.createTransport({
             service:"gmail",
             auth: {
-                user: "flipsidedev0@gmail.com",
+                user: "rockassociates2010@gmail.com",
                 pass: process.env.NODEMAILER_PASSWORD
             },
             tls: {
@@ -51,7 +51,7 @@ const createNewUser = async(request, response) =>{
         })
 
         const mailOptions = {
-            from: '"Rock Associates Co. Ltd" <flipsidedev0@gmail.com>',
+            from: '"Rock Associates Co. Ltd" <rockassociates2010@gmail.com>',
             to: newUser.email,
             subject: "Rock Associates Co. Ltd | Verify your email",
             html: `

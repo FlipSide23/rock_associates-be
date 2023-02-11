@@ -24,7 +24,7 @@ const sendMessage = async(request, response) =>{
         const sender = nodemailer.createTransport({
             service:"gmail",
             auth: {
-                user: "flipsidedev0@gmail.com",
+                user: "rockassociates2010@gmail.com",
                 pass: process.env.NODEMAILER_PASSWORD
             },
             tls: {
@@ -33,8 +33,8 @@ const sendMessage = async(request, response) =>{
         })
 
         const mailOptions = {
-            from: '"FlipSide Dev" <flipsidedev0@gmail.com>',
-            to: "ndicunguyesteve4@gmail.com",
+            from: '"Rock Associates Company Ltd" <rockassociates2010@gmail.com>',
+            to: "rockassociates2010@gmail.com",
             subject: "🔔Notification alert🔔",
             html: `
             <div style="padding: 10px 0;">

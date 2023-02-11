@@ -61,7 +61,27 @@ const createProject = async(request, response) =>{
 const getAllProjects = async(request, response) =>{
     try{
 
-        const allProjects = await projectsModel.find().sort({createdAt: -1});
+        let query=[];
+
+        // Only show needed fields
+        query.push(
+	    	{ 
+	    		$project : {
+    			"_id":1,
+	    		"title": 1,
+	    		"slug": 1,
+				"projectImage":1,
+				"category":1 ,
+				"description":1 ,
+	    		} 
+	    	}
+	    );
+
+        query.push({
+            $sort: {createdAt:-1}
+        });	
+
+        const allProjects = await projectsModel.aggregate(query);
 
         if (allProjects){
             response.status(200).json({

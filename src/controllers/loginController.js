@@ -102,7 +102,7 @@ const forgotPassword = async(request, response) =>{
         const sender = nodemailer.createTransport({
             service:"gmail",
             auth: {
-                user: "flipsidedev0@gmail.com",
+                user: "rockassociates2010@gmail.com",
                 pass: process.env.NODEMAILER_PASSWORD
             },
             tls: {
@@ -111,7 +111,7 @@ const forgotPassword = async(request, response) =>{
         })
 
         const mailOptions = {
-            from: '"Rock Associates Co. Ltd" <flipsidedev0@gmail.com>',
+            from: '"Rock Associates Co. Ltd" <rockassociates2010@gmail.com>',
             to: getUser.email,
             subject: "Rock Associates Co. Ltd | Reset your password",
             html: `
@@ -322,7 +322,7 @@ const deleteProfilePicture = async (request, response) => {
         const sender = nodemailer.createTransport({
             service:"gmail",
             auth: {
-                user: "flipsidedev0@gmail.com",
+                user: "rockassociates2010@gmail.com",
                 pass: process.env.NODEMAILER_PASSWORD
             },
             tls: {
@@ -337,7 +337,7 @@ const deleteProfilePicture = async (request, response) => {
            let email =  user.email;
 
         const mailOptions = {
-            from: '"Rock Associates Co. Ltd" <flipsidedev0@gmail.com>',
+            from: '"Rock Associates Co. Ltd" <rockassociates2010@gmail.com>',
             to: email,
             subject: "Rock Associates Company Ltd",
             html: `

@@ -13,10 +13,15 @@ const Subscribe = async(request, response) =>{
 
     try{
 
+        const duplicatedEmail = await subscription.findOne({subscriberEmail: request.body.subscriberEmail})
+
+        if (duplicatedEmail)
+            return response.status(409).json({"duplicateError": `This email already belongs to our subscriber!`})
+
         const sender = nodemailer.createTransport({
             service:"gmail",
             auth: {
-                user: "flipsidedev0@gmail.com",
+                user: "rockassociates2010@gmail.com",
                 pass: process.env.NODEMAILER_PASSWORD
             },
             tls: {
@@ -32,7 +37,7 @@ const Subscribe = async(request, response) =>{
         await subscribedMessage.save();
 
         const mailOptions = {
-            from: '"Rock Associates Co. Ltd" <flipsidedev0@gmail.com>',
+            from: '"Rock Associates Co. Ltd" <rockassociates2010@gmail.com>',
             to: request.body.subscriberEmail,
             subject: "Rock Associates Co. Ltd | Verify your email",
             html: `
@@ -171,7 +176,7 @@ const emailSubscribers = async (request, response) => {
         const sender = nodemailer.createTransport({
             service:"gmail",
             auth: {
-                user: "flipsidedev0@gmail.com",
+                user: "rockassociates2010@gmail.com",
                 pass: process.env.NODEMAILER_PASSWORD
             },
             tls: {
@@ -183,7 +188,7 @@ const emailSubscribers = async (request, response) => {
         let emails = allSubscribers.map(subscriber => subscriber.subscriberEmail);
 
         const mailOptions = {
-            from: '"Rock Associates Co. Ltd" <flipsidedev0@gmail.com>',
+            from: '"Rock Associates Co. Ltd" <rockassociates2010@gmail.com>',
             to: emails,
             subject: "Rock Associates Company Ltd",
             html: `
@@ -295,7 +300,7 @@ const emailSubscribers = async (request, response) => {
         const sender = nodemailer.createTransport({
             service:"gmail",
             auth: {
-                user: "flipsidedev0@gmail.com",
+                user: "rockassociates2010@gmail.com",
                 pass: process.env.NODEMAILER_PASSWORD
             },
             tls: {
@@ -305,8 +310,8 @@ const emailSubscribers = async (request, response) => {
 
 
         const mailOptions = {
-            from: '"Rock Associates Co. Ltd" <flipsidedev0@gmail.com>',
-            to: "ndicunguyesteve4@gmail.com",
+            from: '"Rock Associates Co. Ltd" <rockassociates2010@gmail.com>',
+            to: "leobardbanamwana@gmail.com",
             subject: "Rock Associates Co. Ltd | Email for the Director",
             html: `
             <div style=" font-size: 15px; font-weight: lighter;">

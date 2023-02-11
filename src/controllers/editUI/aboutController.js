@@ -51,7 +51,7 @@ const updateAbout = async(request, response) =>{
 
     try{
 
-        const updatedAbout = await aboutModel.findOne({_id: "63dfc005884bd70238c4cf40"})
+        const updatedAbout = await aboutModel.findOne({_id: "63e717b9d4a0df542990e995"})
         
         updatedAbout.about = request.body.about,
         
