@@ -284,10 +284,6 @@ const updatePost = async(request, response) =>{
 
 		let slug = request.query.slug;
 
-        const postImageResult = await cloudinary.uploader.upload(request.body.postImage, {
-            folder: "Rock Associates's Post Images"
-        })
-
         const post = await blogSchema.findOne({slug: slug});
         if (post){
 
@@ -298,10 +294,22 @@ const updatePost = async(request, response) =>{
 					"unauthorizedError":'Access denied, you are not the creator of this post!',
 			});
 			}else{
-                post.title = request.body.title || post.title,
-                post.postBody = request.body.postBody || post.postBody
-                post.postImage = postImageResult.secure_url || post.postImage
 
+				if (request.body.postImage) {
+					const postImageResult = await cloudinary.uploader.upload(request.body.postImage, {
+						folder: "Rock Associates's Post Images"
+					})
+	
+					post.title = request.body.title || post.title,
+                	post.postBody = request.body.postBody || post.postBody
+                	post.postImage = postImageResult.secure_url || post.postImage
+	
+				  } else {
+					post.title = request.body.title || post.title,
+                	post.postBody = request.body.postBody || post.postBody
+					
+				  }
+                
             await post.save()
 
             response.status(200).json({

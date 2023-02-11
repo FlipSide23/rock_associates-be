@@ -77,10 +77,19 @@ const getAllProjects = async(request, response) =>{
 	    	}
 	    );
 
-        query.push({
-            $sort: {createdAt:-1}
-        });	
-
+        // Sort functionality
+        if(request.query.sortBy && request.query.sortOrder){
+			var sort = {};
+			sort[request.query.sortBy] = (request.query.sortOrder=='asc')?1:-1;
+			query.push({
+				$sort: sort
+			});
+		}else{
+			query.push({
+				$sort: {createdAt:-1}
+			});	
+		}
+        
         const allProjects = await projectsModel.aggregate(query);
 
         if (allProjects){
@@ -171,24 +180,41 @@ const updateProject = async(request, response) =>{
 
 		let slug = request.query.slug;
 
-        const projectImageResult = await cloudinary.uploader.upload(request.body.projectImage, {
-            folder: "Rock Associates's Project Images"
-        })
+        
 
         const Project = await projectsModel.findOne({slug: slug});
 
         if (Project){
 
-            Project.title = request.body.title || Project.title,
-            Project.description = request.body.description || Project.description,
-            Project.activitiesPerformed = request.body.activitiesPerformed || Project.activitiesPerformed,
-            Project.result = request.body.result || Project.result,
-            Project.employer = request.body.employer || Project.employer,
-            Project.year = request.body.year || Project.year,
-            Project.location = request.body.location || Project.location,
-            Project.client = request.body.client || Project.client,
-            Project.category = request.body.category || Project.category,
-            Project.projectImage = projectImageResult.secure_url || Project.projectImage
+            if (request.body.projectImage) {
+                const projectImageResult = await cloudinary.uploader.upload(request.body.projectImage, {
+                    folder: "Rock Associates's Project Images"
+                })
+
+                Project.title = request.body.title || Project.title,
+                Project.description = request.body.description || Project.description,
+                Project.activitiesPerformed = request.body.activitiesPerformed || Project.activitiesPerformed,
+                Project.result = request.body.result || Project.result,
+                Project.employer = request.body.employer || Project.employer,
+                Project.year = request.body.year || Project.year,
+                Project.location = request.body.location || Project.location,
+                Project.client = request.body.client || Project.client,
+                Project.category = request.body.category || Project.category,
+                Project.projectImage = projectImageResult.secure_url || Project.projectImage
+
+              } else {
+                
+                Project.title = request.body.title || Project.title,
+                Project.description = request.body.description || Project.description,
+                Project.activitiesPerformed = request.body.activitiesPerformed || Project.activitiesPerformed,
+                Project.result = request.body.result || Project.result,
+                Project.employer = request.body.employer || Project.employer,
+                Project.year = request.body.year || Project.year,
+                Project.location = request.body.location || Project.location,
+                Project.client = request.body.client || Project.client,
+                Project.category = request.body.category || Project.category
+                
+              }
 
             await Project.save()
 

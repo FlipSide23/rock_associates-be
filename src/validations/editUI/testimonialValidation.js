@@ -11,7 +11,7 @@ const testimonialValidationSchema = Joi.object({
 
     testimonial: Joi.string().max(380).required().messages({
         "string.empty": "The testimonial field can not be empty",
-        'string.max': 'The testimonial text must have no more than 380 words.'
+        'string.max': 'The testimonial text must have no more than 380 words, try minimizing your text!'
     }),
     
 

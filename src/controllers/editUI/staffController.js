@@ -93,20 +93,30 @@ const updateMember = async(request, response) =>{
         if (error)
             return response.status(400).json({"validationError": error.details[0].message})
 
-        const ImageResult = await cloudinary.uploader.upload(request.body.image, {
-            folder: "Rock Associates's Images"
-        })
+            const updatedMember = await staffModel.findOne({ _id: request.query.memberId });
 
-        const updatedMember = await staffModel.findOne({_id: request.query.memberId})
-        
-            updatedMember.name = request.body.name,
-            updatedMember.position = request.body.position,
-            updatedMember.facebookProfile = request.body.facebookProfile,
-            updatedMember.linkedlinProfile = request.body.linkedlinProfile,
-            updatedMember.twitterProfile = request.body.twitterProfile,
-            updatedMember.image = ImageResult.secure_url,
-        
-        await updatedMember.save()
+            if (request.body.image) {
+                const ImageResult = await cloudinary.uploader.upload(request.body.image, {
+                  folder: "Rock Associates's Images"
+                });
+
+                updatedMember.image = ImageResult.secure_url;
+                updatedMember.name = request.body.name;
+                updatedMember.position = request.body.position;
+                updatedMember.facebookProfile = request.body.facebookProfile;
+                updatedMember.linkedlinProfile = request.body.linkedlinProfile;
+                updatedMember.twitterProfile = request.body.twitterProfile;
+
+              } else {
+                updatedMember.name = request.body.name;
+                updatedMember.position = request.body.position;
+                updatedMember.facebookProfile = request.body.facebookProfile;
+                updatedMember.linkedlinProfile = request.body.linkedlinProfile;
+                updatedMember.twitterProfile = request.body.twitterProfile;
+                
+              }
+
+              await updatedMember.save();
 
         response.status(200).json({
             "successMessage": "Staff member updated successfully!",

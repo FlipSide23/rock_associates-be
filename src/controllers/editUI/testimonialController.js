@@ -91,17 +91,25 @@ const updateTestimonial = async(request, response) =>{
         if (error)
             return response.status(400).json({"validationError": error.details[0].message})
 
-        const ImageResult = await cloudinary.uploader.upload(request.body.image, {
-            folder: "Rock Associates's Images"
-        })
-
         const updatedTestimonial = await testimonialModel.findOne({_id: request.query.testimonialId})
-        
+
+        if (request.body.image) {
+            const ImageResult = await cloudinary.uploader.upload(request.body.image, {
+              folder: "Rock Associates's Images"
+            });
+
             updatedTestimonial.name = request.body.name,
             updatedTestimonial.location = request.body.location,
             updatedTestimonial.testimonial = request.body.testimonial,
-            updatedTestimonial.image = ImageResult.secure_url,
-        
+            updatedTestimonial.image = ImageResult.secure_url
+
+          } else {
+            updatedTestimonial.name = request.body.name,
+            updatedTestimonial.location = request.body.location,
+            updatedTestimonial.testimonial = request.body.testimonial
+            
+          }
+
         await updatedTestimonial.save()
 
         response.status(200).json({
