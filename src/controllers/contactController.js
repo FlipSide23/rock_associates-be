@@ -149,7 +149,7 @@ const replyMessage = async (request, response) => {
         const transporter = nodemailer.createTransport({
             service:"gmail",
             auth: {
-                user: "flipsidedev0@gmail.com",
+                user: "rockassociates2010@gmail.com",
                 pass: process.env.NODEMAILER_PASSWORD
             },
             tls: {
@@ -159,11 +159,11 @@ const replyMessage = async (request, response) => {
 
         // Send verification email to user
         const mailOptions = {
-            from: '"Rock Associates Co. Ltd" <flipsidedev0@gmail.com>',
+            from: '"Rock Associates Co. Ltd" <rockassociates2010@gmail.com>',
             to: senderMessage.email,
             subject: "Rock Associates Co. Ltd | Reply Message",
             html: `
-            <div style="padding: 10px 0px;">
+            <div style="font-size: 14px; font-weight: ligther;">
                 <h4> 
                 ${senderMessage.replyMessage}
                 </h4>
