@@ -90,7 +90,7 @@ const verifyEmailSubscription = async(request, response) =>{
 
             await Subscriber.save()
 
-            response.redirect(process.env.SUBSCRIPTION_EMAILVERIFIED_REDIRECT_URL)
+            response.redirect("https://therockassociates.com/subscriptionEmailVerified")
         }
 
         else{

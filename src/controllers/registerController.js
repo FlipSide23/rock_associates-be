@@ -101,7 +101,7 @@ const verifyEmail = async(request, response) =>{
 
             await emailUser.save()
 
-            response.redirect(process.env.EMAILVERIFIED_REDIRECT_URL)
+            response.redirect("https://therockassociates.com/emailVerified")
         }
 
         else{
