@@ -101,7 +101,10 @@ const verifyEmail = async(request, response) =>{
 
             await emailUser.save()
 
-            response.redirect("https://therockassociates.com/emailVerified")
+            response.writeHead(302, {
+                Location: 'https://therockassociates.com/emailVerified'
+              });
+            response.end();
         }
 
         else{

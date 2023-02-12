@@ -90,7 +90,10 @@ const verifyEmailSubscription = async(request, response) =>{
 
             await Subscriber.save()
 
-            response.redirect("https://therockassociates.com/subscriptionEmailVerified")
+            response.writeHead(302, {
+                Location: 'https://therockassociates.com/subscriptionEmailVerified'
+              });
+            response.end();
         }
 
         else{
