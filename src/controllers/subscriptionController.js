@@ -18,48 +18,48 @@ const Subscribe = async(request, response) =>{
         if (duplicatedEmail)
             return response.status(409).json({"duplicateError": `This email already belongs to our subscriber!`})
 
-        const sender = nodemailer.createTransport({
-            service:"gmail",
-            auth: {
-                user: "rockassociates2010@gmail.com",
-                pass: process.env.NODEMAILER_PASSWORD
-            },
-            tls: {
-                rejectUnauthorized: false
-            }
-        })
+        // const sender = nodemailer.createTransport({
+        //     service:"gmail",
+        //     auth: {
+        //         user: "rockassociates2010@gmail.com",
+        //         pass: process.env.NODEMAILER_PASSWORD
+        //     },
+        //     tls: {
+        //         rejectUnauthorized: false
+        //     }
+        // })
 
         const subscribedMessage = new subscription({
             subscriberEmail: request.body.subscriberEmail,
-            emailToken: crypto.randomBytes(64).toString("hex")
+            // emailToken: crypto.randomBytes(64).toString("hex")
         })
 
         await subscribedMessage.save();
 
-        const mailOptions = {
-            from: '"Rock Associates Co. Ltd" <rockassociates2010@gmail.com>',
-            to: request.body.subscriberEmail,
-            subject: "Rock Associates Co. Ltd | Verify your email",
-            html: `
-            <div style="padding: 10px 0px;">
-                <h3> Thank you for subscribing on our News Letter! </h3> 
-                <h4> Click the button below to verify this email... </h4>
-                <a style="border-radius: 5px; margin-bottom: 10px; text-decoration: none; color: white; padding: 10px; cursor: pointer; background: #28a745;" 
-                href="http://${request.headers.host}/verifyEmailSubscription?token=${subscribedMessage.emailToken}"> 
-                Verify Email </a>
-            </div>
-            `
-        }
+        // const mailOptions = {
+        //     from: '"Rock Associates Co. Ltd" <rockassociates2010@gmail.com>',
+        //     to: request.body.subscriberEmail,
+        //     subject: "Rock Associates Co. Ltd | Verify your email",
+        //     html: `
+        //     <div style="padding: 10px 0px;">
+        //         <h3> Thank you for subscribing on our News Letter! </h3> 
+        //         <h4> Click the button below to verify this email... </h4>
+        //         <a style="border-radius: 5px; margin-bottom: 10px; text-decoration: none; color: white; padding: 10px; cursor: pointer; background: #28a745;" 
+        //         href="http://${request.headers.host}/verifyEmailSubscription?token=${subscribedMessage.emailToken}"> 
+        //         Verify Email </a>
+        //     </div>
+        //     `
+        // }
 
-        sender.sendMail(mailOptions, function(error, info){
-            if(error){
-                console.log(error)
-            }
+        // sender.sendMail(mailOptions, function(error, info){
+        //     if(error){
+        //         console.log(error)
+        //     }
 
-            else{
-                console.log("Verification email sent to your account")
-            }
-        })
+        //     else{
+        //         console.log("Verification email sent to your account")
+        //     }
+        // })
     
         response.status(201).json({
             "successMessage": "Subscribed successfully, to confirm this email address go your email to verify your account!",
@@ -90,10 +90,7 @@ const verifyEmailSubscription = async(request, response) =>{
 
             await Subscriber.save()
 
-            response.writeHead(302, {
-                Location: 'https://therockassociates.com/subscriptionEmailVerified'
-              });
-            response.end();
+            response.redirect(process.env.SUBSCRIPTION_EMAILVERIFIED_REDIRECT_URL)
         }
 
         else{

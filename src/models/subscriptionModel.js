@@ -9,9 +9,9 @@ const subscriptionSchema = new Schema ({
         required: true
     },
 
-    emailToken: {
-        type: String
-    },
+    // emailToken: {
+    //     type: String
+    // },
 
     isVerified: {
         type: Boolean,

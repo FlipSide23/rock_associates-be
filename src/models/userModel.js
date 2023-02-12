@@ -36,9 +36,9 @@ const userSchema = new Schema({
         type: Boolean
     },
 
-    emailToken: {
-        type: String
-    },
+    // emailToken: {
+    //     type: String
+    // },
 
     isVerified: {
         type: Boolean

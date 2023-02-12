@@ -33,47 +33,47 @@ const createNewUser = async(request, response) =>{
             email: request.body.email,
             password: hashedPassword,
             repeatPassword: hashedRepeatPassword,
-            emailToken: crypto.randomBytes(64).toString("hex"),
-            isVerified: false
+            // emailToken: crypto.randomBytes(64).toString("hex"),
+            isVerified: true
         })
 
         await newUser.save();
 
-        const sender = nodemailer.createTransport({
-            service:"gmail",
-            auth: {
-                user: "rockassociates2010@gmail.com",
-                pass: process.env.NODEMAILER_PASSWORD
-            },
-            tls: {
-                rejectUnauthorized: false
-            }
-        })
+        // const sender = nodemailer.createTransport({
+        //     service:"gmail",
+        //     auth: {
+        //         user: "rockassociates2010@gmail.com",
+        //         pass: process.env.NODEMAILER_PASSWORD
+        //     },
+        //     tls: {
+        //         rejectUnauthorized: false
+        //     }
+        // })
 
-        const mailOptions = {
-            from: '"Rock Associates Co. Ltd" <rockassociates2010@gmail.com>',
-            to: newUser.email,
-            subject: "Rock Associates Co. Ltd | Verify your email",
-            html: `
-            <div style="padding: 10px 0;">
-                <h3> ${newUser.firstName} ${newUser.lastName} thank you for registering on our website! </h3> 
-                <h4> Click the button below to verify your email... </h4>
-                <a style="border-radius: 5px; margin-bottom: 10px; text-decoration: none; color: white; padding: 10px; cursor: pointer; background: #28a745;" 
-                href="http://${request.headers.host}/verifyEmail?token=${newUser.emailToken}"> 
-                Verify Email </a>
-            </div>
-            `
-        }
+        // const mailOptions = {
+        //     from: '"Rock Associates Co. Ltd" <rockassociates2010@gmail.com>',
+        //     to: newUser.email,
+        //     subject: "Rock Associates Co. Ltd | Verify your email",
+        //     html: `
+        //     <div style="padding: 10px 0;">
+        //         <h3> ${newUser.firstName} ${newUser.lastName} thank you for registering on our website! </h3> 
+        //         <h4> Click the button below to verify your email... </h4>
+        //         <a style="border-radius: 5px; margin-bottom: 10px; text-decoration: none; color: white; padding: 10px; cursor: pointer; background: #28a745;" 
+        //         href="http://${request.headers.host}/verifyEmail?token=${newUser.emailToken}"> 
+        //         Verify Email </a>
+        //     </div>
+        //     `
+        // }
 
-        sender.sendMail(mailOptions, function(error, info){
-            if(error){
-                console.log(error)
-            }
+        // sender.sendMail(mailOptions, function(error, info){
+        //     if(error){
+        //         console.log(error)
+        //     }
 
-            else{
-                console.log("Verification email sent to your account")
-            }
-        })
+        //     else{
+        //         console.log("Verification email sent to your account")
+        //     }
+        // })
 
         response.status(201).json({"successMessage": "Account created successfully!"})
     }
@@ -101,10 +101,7 @@ const verifyEmail = async(request, response) =>{
 
             await emailUser.save()
 
-            response.statusCode = 302;
-            response.setHeader("Location", "https://therockassociates.com/emailverified");
-            response.end();
-
+            response.redirect(process.env.EMAILVERIFIED_REDIRECT_URL)
         }
 
         else{
